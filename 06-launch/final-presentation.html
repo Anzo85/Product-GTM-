@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roamly Groups · Go-To-Market Final Project</title>
+<style>
+:root{
+  --bg:#07162C; --panel:#0D2140; --line:#1C3760; --ink:#FFFFFF; --body:#C4CEDD; --muted:#8497B4; --accent:#3B82F6; --accent-soft:#1B3A6B;
+  --sans:"Avenir Next","Segoe UI","Helvetica Neue",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;background:var(--bg)}
+body{font-family:var(--sans);color:var(--body);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+section{min-height:100vh;scroll-snap-align:start;display:flex;align-items:center;padding:clamp(56px,8vh,96px) clamp(20px,6vw,96px);position:relative}
+.wrap{width:100%;max-width:1120px;margin:0 auto}
+h1,h2,h3{color:var(--ink);line-height:1.1;letter-spacing:-.02em}
+h1{font-size:clamp(2.6rem,7vw,5.4rem);font-weight:800}
+h2{font-size:clamp(1.9rem,4vw,3rem);font-weight:800;margin-bottom:.35em}
+h3{font-size:1.05rem;font-weight:700;margin-bottom:.4em}
+.kicker{color:var(--accent);font-weight:700;font-size:.95rem;margin-bottom:.9rem}
+.lede{font-size:clamp(1.05rem,1.8vw,1.3rem);max-width:62ch;margin-bottom:2rem}
+ul{list-style:none}
+li{position:relative;padding-left:1.1em;margin:.45em 0}
+li::before{content:"";position:absolute;left:0;top:.62em;width:.42em;height:.42em;border-radius:50%;background:var(--accent)}
+strong{color:var(--ink);font-weight:650}
+.grid{display:grid;gap:clamp(16px,2.4vw,28px)}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,2.2vw,28px)}
+.quote{border-left:4px solid var(--accent);padding:.4em 0 .4em 1.1em;font-size:clamp(1.05rem,1.7vw,1.3rem);color:var(--ink);max-width:70ch}
+.muted{color:var(--muted);font-size:.9rem}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;color:var(--ink);background:var(--accent);border-radius:999px;padding:.2em .8em;margin-bottom:.8em}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{text-align:left;vertical-align:top;padding:.7em .8em;border-bottom:1px solid var(--line)}
+th{color:var(--ink);font-weight:700}
+.scroll{overflow-x:auto}
+/* title split bar: the product in one picture */
+.split{display:flex;gap:8px;margin:2.6rem 0 1rem;max-width:720px}
+.seg{flex:1;height:58px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:650;transform-origin:left;transform:scaleX(0)}
+.seg.late{background:transparent;border:3px dashed var(--accent);color:#9DBDF5}
+.go .seg{animation:fill .55s cubic-bezier(.2,.7,.2,1) forwards}
+.go .seg:nth-child(2){animation-delay:.12s}.go .seg:nth-child(3){animation-delay:.24s}.go .seg:nth-child(4){animation-delay:.36s}.go .seg:nth-child(5){animation-delay:.48s}.go .seg:nth-child(6){animation-delay:.75s}
+@keyframes fill{to{transform:scaleX(1)}}
+.tier.best{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.price{font-size:1.6rem;font-weight:800;color:var(--ink);margin:.2em 0 .5em}
+.asset svg{width:100%;height:auto;border-radius:14px;display:block;border:1px solid var(--line);max-height:68vh}
+.bet{font-size:clamp(1.6rem,3.6vw,2.8rem);font-weight:800;color:var(--ink);line-height:1.2;max-width:24ch;margin-bottom:1.2rem}
+/* chrome */
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--accent);z-index:10;transition:width .15s linear}
+#dots{position:fixed;right:clamp(10px,2vw,24px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:10}
+#dots button{width:12px;height:12px;border-radius:50%;border:2px solid var(--muted);background:transparent;cursor:pointer;padding:0}
+#dots button[aria-current="true"]{background:var(--accent);border-color:var(--accent)}
+#dots button:focus-visible,a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:860px){.g2,.g3{grid-template-columns:1fr}#dots{display:none}.seg{height:44px;font-size:.8rem}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.seg{transform:none;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+<nav id="dots" aria-label="Slides"></nav>
+
+<!-- 1 TITLE -->
+<section id="s1" aria-label="Title">
+ <div class="wrap">
+  <p class="kicker">Andrii Zolotarov · Go-To-Market Final Project</p>
+  <h1>Roamly Groups</h1>
+  <p class="lede" style="margin-top:1rem">Book together. Pay separately. Nobody's the bank.</p>
+  <div class="split" id="split" aria-label="A €1,284 booking split six ways: five friends paid, one late, booking still held">
+   <div class="seg">Maya</div><div class="seg">Jon</div><div class="seg">Ana</div><div class="seg">Leo</div><div class="seg">Sam</div><div class="seg late">Kai</div>
+  </div>
+  <p class="muted">Lisbon house, 6 friends, €214 each. Kai is late — the booking still holds.</p>
+  <p class="muted" style="margin-top:2.4rem">Product School · Go-To-Market Certification · September 26, 2026</p>
+ </div>
+</section>
+
+<!-- 2 GTM STRATEGY -->
+<section id="s2" aria-label="GTM Strategy">
+ <div class="wrap reveal">
+  <p class="kicker">GTM Strategy</p>
+  <h2>The organizer is always the bank</h2>
+  <p class="lede">One friend fronts thousands for the group trip, chases everyone for weeks, and eats the loss when someone drops out. 43% of US travelers have lost $1,000+ this way.</p>
+  <div class="grid g3">
+   <div class="panel"><h3>Who</h3><ul><li><strong>The Designated Organizer</strong>, 26–38</li><li>Plans 1–3 trips a year for 4–12 friends</li><li>Bookings of €1.5k–€8k</li></ul></div>
+   <div class="panel"><h3>Motion</h3><ul><li><strong>Product-led</strong> core: entry on every 4+-guest search</li><li>Invite links are the growth loop</li><li><strong>Marketing-led</strong> seasonal pushes: planning season, bach season</li></ul></div>
+   <div class="panel"><h3>Success at 90 days</h3><ul><li><strong>5,000</strong> fully-paid group bookings / month</li><li><strong>≥ 85%</strong> shares paid in the hold window</li><li><strong>≥ 1.5</strong> new accounts per booking</li></ul></div>
+  </div>
+  <p class="muted" style="margin-top:1.4rem">Riskiest assumption: friends pay on time. Tested first with a 50-organizer concierge pilot.</p>
+ </div>
+</section>
+
+<!-- 3 COMPETITIVE -->
+<section id="s3" aria-label="Competitive Intelligence and Strategic Bet">
+ <div class="wrap reveal">
+  <p class="kicker">Competitive Intelligence &amp; Strategic Bet</p>
+  <h2>The biggest player tried, and walked away</h2>
+  <div class="scroll"><table>
+   <thead><tr><th>Alternative</th><th>Strength</th><th>Weakness</th><th>How we win</th></tr></thead>
+   <tbody>
+    <tr><td><strong>One card + payment apps</strong></td><td>Free, familiar</td><td>Organizer fronts everything and carries the risk</td><td>Organizer's card only pays their share</td></tr>
+    <tr><td><strong>Big booking platforms</strong></td><td>Inventory, trust</td><td>One payer. Airbnb's 2017 split was all-or-nothing in 72h — since discontinued</td><td>A late payer never kills the booking</td></tr>
+    <tr><td><strong>Group trip planners</strong></td><td>Voting, itineraries</td><td>Booking and paying happen elsewhere</td><td>Plan → vote → book → pay in one flow</td></tr>
+   </tbody>
+  </table></div>
+  <div class="grid g2" style="margin-top:1.6rem">
+   <div class="panel"><span class="tag">The bet</span><p style="color:var(--ink);font-size:1.1rem">The organizer, not the destination, is the unit of growth. Remove their risk and every trip brings 3–11 new travelers at near-zero CAC.</p></div>
+   <div class="panel"><h3>The question to plant</h3><p>"What happens to the booking if one person doesn't pay on time?"</p><p class="muted" style="margin-top:.8em">Not doing: corporate travel, wedding blocks, flights, groups over 16.</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- 4 POSITIONING -->
+<section id="s4" aria-label="Positioning">
+ <div class="wrap reveal">
+  <p class="kicker">Positioning</p>
+  <h2>Nobody's the bank</h2>
+  <p class="quote">For friend-group trip organizers who are tired of fronting thousands and chasing friends for money, Roamly Groups is the group trip booking experience that lets everyone vote on the stay and pay their own share at checkout. Unlike booking on one card and collecting later, it keeps the booking safe even when someone flakes.</p>
+  <div class="grid g3" style="margin-top:2rem">
+   <div class="panel"><h3>Category</h3><p>Group trip booking</p></div>
+   <div class="panel"><h3>Differentiator</h3><p>Dropout-proof split: the booking holds when someone is late</p></div>
+   <div class="panel"><h3>Core truth</h3><p>The organizer's card only ever pays the organizer's share</p></div>
+  </div>
+  <p style="margin-top:1.6rem;color:var(--ink);font-size:1.25rem;font-weight:700">Book together. Pay separately. Nobody's the bank.</p>
+ </div>
+</section>
+
+<!-- 5 MESSAGING -->
+<section id="s5" aria-label="Messaging">
+ <div class="wrap reveal">
+  <p class="kicker">Messaging</p>
+  <h2>One product, two opposite jobs</h2>
+  <div class="grid" style="grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);align-items:start" id="msggrid">
+   <div class="scroll"><table>
+    <thead><tr><th></th><th>The Organizer <span class="muted">(decides)</span></th><th>The Invitee <span class="muted">(pays)</span></th></tr></thead>
+    <tbody>
+     <tr><th>Value prop</th><td>Plan the trip, not the payback</td><td>Pay your share in a minute. No IOUs.</td></tr>
+     <tr><th>Capabilities</th><td>Voting, split checkout, live "who's paid", reminders, booking holds while friends pay</td><td>Pay from a link, no app needed; Apple Pay / Google Pay; confirmation in your name</td></tr>
+     <tr><th>Evidence</th><td>43% lost $1k+ to non-paying friends; pilot target 85% paid in 48h</td><td>Link comes from a friend; target median time-to-pay under 5 min</td></tr>
+    </tbody>
+   </table>
+   <p class="muted" style="margin-top:1rem">From: one person books and chases. To: everyone commits with their own card, the way we already split dinners and rides.</p></div>
+   <figure class="asset"><div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" role="img" aria-label="Roamly Groups launch ad" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect role="img" aria-label="Roamly Groups launch ad" fill="#07162C"/>
+  <circle cx="930" cy="170" r="260" fill="#0E2447"/>
+  <text x="90" y="170" fill="#93B4E8" font-size="34" font-weight="600">Roamly Groups</text>
+  <text x="90" y="300" fill="#FFFFFF" font-size="96" font-weight="800" letter-spacing="-2">Book together.</text>
+  <text x="90" y="410" fill="#FFFFFF" font-size="96" font-weight="800" letter-spacing="-2">Pay separately.</text>
+  <text x="90" y="490" fill="#C7D2E3" font-size="38">Nobody's the bank.</text>
+
+  <rect x="90" y="570" width="900" height="560" rx="36" fill="#0F2240" stroke="#1F3A66" stroke-width="2"/>
+  <text x="140" y="650" fill="#FFFFFF" font-size="42" font-weight="700">Lisbon house, 6 friends</text>
+  <text x="140" y="705" fill="#93A4BF" font-size="30">Total €1,284  |  each share €214</text>
+
+  <g transform="translate(140,760)">
+    <rect x="0"   y="0" width="128" height="64" rx="12" fill="#3B82F6"/>
+    <rect x="136" y="0" width="128" height="64" rx="12" fill="#3B82F6"/>
+    <rect x="272" y="0" width="128" height="64" rx="12" fill="#3B82F6"/>
+    <rect x="408" y="0" width="128" height="64" rx="12" fill="#3B82F6"/>
+    <rect x="544" y="0" width="128" height="64" rx="12" fill="#3B82F6"/>
+    <rect x="680" y="0" width="120" height="64" rx="12" fill="none" stroke="#3B82F6" stroke-width="4" stroke-dasharray="10 8"/>
+    <g fill="#FFFFFF" font-size="26" font-weight="600" text-anchor="middle">
+      <text x="64" y="42">Maya</text><text x="200" y="42">Jon</text><text x="336" y="42">Ana</text>
+      <text x="472" y="42">Leo</text><text x="608" y="42">Sam</text>
+    </g>
+    <text x="740" y="42" fill="#93B4E8" font-size="26" font-weight="600" text-anchor="middle">Kai</text>
+  </g>
+  <text x="140" y="900" fill="#FFFFFF" font-size="34" font-weight="600">5 of 6 paid</text>
+  <text x="140" y="950" fill="#93A4BF" font-size="30">Kai is late? The booking still holds.</text>
+  <text x="140" y="995" fill="#93A4BF" font-size="30">Re-split the gap or cover it. Your call.</text>
+  <rect x="140" y="1035" width="800" height="4" rx="2" fill="#1F3A66"/>
+  <text x="140" y="1090" fill="#C7D2E3" font-size="28">Friends pay from a link. No app needed.</text>
+
+  <rect x="90" y="1180" width="480" height="96" rx="48" fill="#3B82F6"/>
+  <text x="330" y="1240" fill="#FFFFFF" font-size="36" font-weight="700" text-anchor="middle">Start a Group</text>
+</svg>
+</div><figcaption class="muted" style="margin-top:.6rem">AI-generated launch ad, edited to show the late payer — the differentiator.</figcaption></figure>
+  </div>
+ </div>
+</section>
+
+<!-- 6 PRICING -->
+<section id="s6" aria-label="Pricing Recommendation">
+ <div class="wrap reveal">
+  <p class="kicker">Pricing Recommendation</p>
+  <h2>Free core, per-traveler upgrade</h2>
+  <p class="lede">Hybrid model: standard commission on every share keeps the loop free; the organizer chooses Plus, and its cost is split across the group.</p>
+  <div class="grid g3">
+   <div class="panel tier"><h3>Groups</h3><p class="price">Free</p><ul><li>Up to 8 travelers</li><li>Voting and split checkout</li><li>48-hour hold</li><li>Booking never collapses</li></ul></div>
+   <div class="panel tier best"><span class="tag">Recommended</span><h3>Groups Plus</h3><p class="price">€3 <span class="muted">per traveler / trip</span></p><ul><li>Up to 16 travelers</li><li>7-day hold, auto reminders</li><li>Uneven splits, instalments</li></ul></div>
+   <div class="panel tier"><h3>Groups Host</h3><p class="price">€79 <span class="muted">per trip, later</span></p><ul><li>17–30 travelers</li><li>Organizer dashboard</li><li>Deposits, multiple properties</li></ul></div>
+  </div>
+  <p class="muted" style="margin-top:1.4rem">Validate with Van Westendorp (fee) + Max-Diff (features). First: A/B Plus vs. no Plus — does the fee lower share completion?</p>
+ </div>
+</section>
+
+<!-- 7 INSIGHTS -->
+<section id="s7" aria-label="Individual Insights">
+ <div class="wrap reveal">
+  <p class="kicker">Launch &amp; Individual Insights</p>
+  <h2>What I learned</h2>
+  <div class="grid g2">
+   <div class="panel"><h3>Launch plan</h3><ul><li><strong>Pre-launch:</strong> fake-door test, 50-organizer pilot, host opt-in for holds</li><li><strong>Launch:</strong> January planning season, creator campaign, in-app entry</li><li><strong>Post-launch:</strong> roll out Plus, pricing research, turn invitees into organizers</li><li><strong>Tripwire:</strong> share completion under 70% for 2 weeks pauses expansion</li></ul></div>
+   <div class="panel"><h3>Insights</h3><ul><li><strong>Aha:</strong> the buyer and the payer are different people — it shaped messaging, pricing and growth</li><li><strong>Friction:</strong> positioning is easy to copy until you name what competitors can't do</li><li><strong>Takeaway:</strong> study failed attempts, not only current players</li><li><strong>Monday:</strong> name the one assumption that breaks the plan, test it first</li></ul></div>
+  </div>
+ </div>
+</section>
+
+<!-- 8 CLOSING -->
+<section id="s8" aria-label="Closing">
+ <div class="wrap reveal">
+  <p class="kicker">The bet in one line</p>
+  <p class="bet">Take the risk off the organizer, and every group trip grows Roamly.</p>
+  <p class="lede">Thank you.</p>
+ </div>
+</section>
+
+<script>
+(function(){
+  var secs=[].slice.call(document.querySelectorAll('section'));
+  var dots=document.getElementById('dots');
+  secs.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.setAttribute('aria-label','Go to slide '+(i+1)+': '+s.getAttribute('aria-label'));
+    b.addEventListener('click',function(){s.scrollIntoView()});
+    dots.appendChild(b);
+  });
+  var btns=dots.querySelectorAll('button');
+  var current=0;
+  function setCurrent(i){current=i;btns.forEach(function(b,j){b.setAttribute('aria-current',j===i?'true':'false')});}
+  setCurrent(0);
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        var i=secs.indexOf(e.target); setCurrent(i);
+        var r=e.target.querySelector('.reveal'); if(r) r.classList.add('in');
+        if(i===0) document.getElementById('split').classList.add('go');
+      }
+    });
+  },{threshold:.5});
+  secs.forEach(function(s){io.observe(s)});
+  var bar=document.getElementById('progress');
+  function prog(){var h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  addEventListener('keydown',function(e){
+    var k=e.key, n=null;
+    if(k==='ArrowDown'||k==='ArrowRight'||k==='PageDown'||k===' ') n=Math.min(current+1,secs.length-1);
+    if(k==='ArrowUp'||k==='ArrowLeft'||k==='PageUp') n=Math.max(current-1,0);
+    if(k==='Home') n=0; if(k==='End') n=secs.length-1;
+    if(n!==null){e.preventDefault(); secs[n].scrollIntoView();}
+  });
+  var mq=matchMedia('(max-width:860px)');
+  function msg(){document.getElementById('msggrid').style.gridTemplateColumns=mq.matches?'1fr':'minmax(0,1.7fr) minmax(0,1fr)';}
+  mq.addEventListener('change',msg); msg();
+})();
+</script>
+</body>
+</html>

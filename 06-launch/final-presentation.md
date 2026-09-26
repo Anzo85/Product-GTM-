@@ -6,7 +6,7 @@
 
 ## How to build it
 
-1. Open the **[Presentation Prompt Builder](../../Modules/Module%206%20-%20Presentation%20Prompt%20Builder.html)** (or use the prompt below).
+1. Open the **Presentation Prompt Builder** from the course materials (or use the prompt below).
 2. Get your deliverables in — the fast way: paste your **public GitHub repo link** into the *Quick-fill from your project repo* bar and it pulls these six markdown files automatically. Or paste them in by hand (Modules 1–5 + your individual insights).
 3. Review and tidy the imported text, then copy the generated prompt into Claude, ChatGPT, Gemini — any LLM.
 4. Save the returned file as `final-presentation.html` in this folder.
@@ -43,9 +43,9 @@ CONTENT — use exactly what I paste below; keep each slide tight and scannable 
 --- PRICING ---                <paste from 05-pricing/pricing-recommendation.md>
 --- INDIVIDUAL INSIGHTS ---     <paste from 06-launch/individual-insights.md>
 
-OUTPUT — return only the complete HTML file in one code block, ready to save as index.html.
+OUTPUT — return only the complete HTML file in one code block, ready to save as final-presentation.html.
 ```
 
 ## Link to the published deck
 
-_[link to your final-presentation.html — e.g. a GitHub Pages URL]_
+[`final-presentation.html`](final-presentation.html) — download and open in a browser, or enable GitHub Pages to view it online.
